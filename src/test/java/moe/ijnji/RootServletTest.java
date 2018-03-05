@@ -7,13 +7,13 @@ import junit.framework.TestSuite;
 /**
  * Unit test for simple App.
  */
-public class MoeAppTest extends TestCase {
+public class RootServletTest extends TestCase {
     /**
      * Create the test case
      *
      * @param testName name of the test case
      */
-    public MoeAppTest(String testName) {
+    public RootServletTest(String testName) {
         super(testName);
     }
 
@@ -21,7 +21,7 @@ public class MoeAppTest extends TestCase {
      * @return the suite of tests being tested
      */
     public static Test suite() {
-        return new TestSuite(MoeAppTest.class);
+        return new TestSuite(RootServletTest.class);
     }
 
     /**
