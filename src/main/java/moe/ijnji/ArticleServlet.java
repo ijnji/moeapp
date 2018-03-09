@@ -9,14 +9,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.ServletException;
 
 @WebServlet(value = "/api/article/*")
-public class ApiArticleServlet extends HttpServlet {
+public class ArticleServlet extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-    	String id = request.getPathInfo();
+    	String slug = request.getPathInfo();
     	response.setContentType("text/html");
     	response.setCharacterEncoding("UTF-8");
-    	response.getWriter().write(id);
+    	response.getWriter().write(slug);
     }
 
 }
