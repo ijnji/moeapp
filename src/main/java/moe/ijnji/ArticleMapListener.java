@@ -3,57 +3,73 @@ package moe.ijnji;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
+import java.util.*;
 import javax.servlet.ServletContextListener;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContext;
+import javax.servlet.annotation.WebListener;
+import com.esotericsoftware.yamlbeans.YamlReader;
 
+@WebListener
 public class ArticleMapListener implements ServletContextListener {
 
-    private static final String ARTICLE_PATH = "/article";
+    private static final String ARTICLE_PATH = "WEB-INF/article";
 
     @Override
     public void contextInitialized(ServletContextEvent event) {
-        ServletContext context = event.getServletContext();
-        File folder = new File(context.getRealPath(ARTICLE_PATH));
-        HashMap<String, Article> map = new HashMap<>();
-        for (File file : folder.listFiles()) {
-            if (file.isFile())
-                parseArticle(file, map);
+        try {
+            ServletContext context = event.getServletContext();
+            File folder = new File(context.getRealPath(ARTICLE_PATH));
+            HashMap<String, Article> store = new HashMap<>();
+            for (File file : folder.listFiles()) {
+                if (file.isFile())
+                    generateArticle(file, store);
+            }
+            context.setAttribute("article", store);
+        } catch (Exception e) {
+            System.out.println(e);
         }
-        context.setAttribute("article", map);
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent event) {}
 
-    private void parseArticle(File file, HashMap<String, Article> map) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            List<String> header = new ArrayList<>();
-            List<String> body = new ArrayList<>();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                line = line.trim();
-                if (!line.equals("---")) {
-                    header.add(line);
-                } else {
-                    break;
-                }
+    private void generateArticle(File file, HashMap<String, Article> map) throws Exception {
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+        List<String> header = new ArrayList<>();
+        List<String> body = new ArrayList<>();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            line = line.trim();
+            if (!line.equals("---")) {
+                header.add(line);
+            } else {
+                break;
             }
-            while ((line = reader.readLine()) != null) {
-                line = line.trim();
-                body.add(line);
-            }
-            String slug = file.getName().substring(0, file.getName().lastIndexOf(".") + 1);
-        } catch (IOException e) {}
+        }
+        while ((line = reader.readLine()) != null) {
+            line = line.trim();
+            body.add(line);
+        }
+
+        String slug = file.getName().substring(0, file.getName().lastIndexOf("."));
+        Article article = parseArticle(
+            String.join("\n", header),
+            String.join("\n", body)
+        );
+        map.put(slug, article);
     }
 
-    private Article constructArticle(List<String> header, List<String> body) {
+    private Article parseArticle(String header, String body) throws Exception {
+        YamlReader reader = new YamlReader(header);
+        Map map = (Map)reader.read();
 
+        Article article = new Article();
+        article.title = (String)map.get("title");
+        article.date = Long.parseLong((String)map.get("date"));
+        article.categories = (List<String>)map.get("categories");
+        article.body = body;
+        return article;
     }
 
 }
