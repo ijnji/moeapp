@@ -1,0 +1,29 @@
+package moe.ijnji;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+@WebServlet("/api/*")
+public class ApiServlet extends HttpServlet {
+
+    @Override
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        String path = request.getPathInfo();
+        if (path == null || path.length() == 1)
+            return;
+        if (path.lastIndexOf("/") == path.length() - 1)
+            path = path.substring(0, path.length() - 1);
+
+        String resource;
+        resource = "/article";
+        if (path.indexOf(resource) == 0) {
+            path = path.substring(resource.length());
+            ApiArticleHandler.handleGet(request, response, path);
+        }
+    }
+
+}

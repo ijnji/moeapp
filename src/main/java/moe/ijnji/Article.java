@@ -1,8 +1,8 @@
 package moe.ijnji;
 
-import java.util.HashMap;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import java.util.List;
-import java.util.Map;
 
 public class Article {
 
@@ -13,12 +13,20 @@ public class Article {
 
     public Article() {}
 
-    public String toString() {
-        Map<String, String> map = new HashMap<>();
-        map.put("title", title);
-        map.put("date", Long.toString(date));
-        map.put("categories", categories.toString());
-        map.put("body", body);
-        return map.toString();
+    public JsonObject toIndexJson() {
+        JsonObject obj = new JsonObject();
+        obj.addProperty("title", this.title);
+        obj.addProperty("date", this.date);
+        JsonArray categoriesArray = new JsonArray();
+        for (String c : this.categories)
+            categoriesArray.add(c);
+        obj.add("categories", categoriesArray);
+        return obj;
+    }
+
+    public JsonObject toFullJson() {
+        JsonObject obj = this.toIndexJson();
+        obj.addProperty("body", this.body);
+        return obj;
     }
 }

@@ -17,18 +17,18 @@ public class ArticleMapListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent event) {
-        try {
             ServletContext context = event.getServletContext();
             File folder = new File(context.getRealPath(ARTICLE_PATH));
             HashMap<String, Article> store = new HashMap<>();
             for (File file : folder.listFiles()) {
-                if (file.isFile())
-                    generateArticle(file, store);
+                try {
+                    if (file.isFile())
+                        generateArticle(file, store);
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
             }
             context.setAttribute("article", store);
-        } catch (Exception e) {
-            System.out.println(e);
-        }
     }
 
     @Override
@@ -41,10 +41,10 @@ public class ArticleMapListener implements ServletContextListener {
         String line;
         while ((line = reader.readLine()) != null) {
             line = line.trim();
-            if (!line.equals("---")) {
-                header.add(line);
-            } else {
+            if (line.equals("---")) {
                 break;
+            } else {
+                header.add(line);
             }
         }
         while ((line = reader.readLine()) != null) {
