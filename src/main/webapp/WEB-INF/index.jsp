@@ -1,10 +1,13 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <link href="https://fonts.googleapis.com/css?family=Marmelad" rel="stylesheet" tpe="text/css">
-  <title>Moe App GAE Standard Java 8</title>
-</head>
-<body>
-  <h1>Hello Moe App on GAE using Java 8!</h1>
-</body>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>ijnji.moe</title>
+    <link href="https://fonts.googleapis.com/css?family=Marmelad" rel="stylesheet" tpe="text/css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <script src="/js/main.js"></script>
+  </head>
+  <body>
+    <div id="app">{{ message }}</div>
+  </body>
 </html>

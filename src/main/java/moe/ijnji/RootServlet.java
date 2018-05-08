@@ -8,8 +8,10 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.ServletException;
 
-@WebServlet(value = "/")
+@WebServlet(urlPatterns = {"/"})
 public class RootServlet extends HttpServlet {
+
+    // TODO: manually send index.html :/
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
