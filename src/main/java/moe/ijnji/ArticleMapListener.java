@@ -13,7 +13,7 @@ import com.esotericsoftware.yamlbeans.YamlReader;
 @WebListener
 public class ArticleMapListener implements ServletContextListener {
 
-    private static final String ARTICLE_PATH = "WEB-INF/article";
+    private static final String ARTICLE_PATH = "/WEB-INF/article";
 
     @Override
     public void contextInitialized(ServletContextEvent event) {

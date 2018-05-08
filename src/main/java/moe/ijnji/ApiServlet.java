@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(urlPatterns = {"api/*"})
+@WebServlet(urlPatterns = {"/api/*"})
 public class ApiServlet extends HttpServlet {
 
     @Override
